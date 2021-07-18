@@ -280,52 +280,6 @@ h3.date-header{font:400 12px Arial;color:#666;line-height:1.2em;margin:.1em 0}
 @media screen and (max-width: 240px){
 #header2{text-align:center;width:100%}
 }
-  .marquee-text {
-height: 30px;
-display: block;
-line-height: 30px;
-overflow: hidden;
-position: relative;
-background: #ddd;
-}
-
-.marquee-text:before,
-.marquee-text:after {
-content: '';
-position: absolute;
-width: 5px;
-height: 100%;
-background: #ddd;
-top: 0;
-z-index: 2;
-}
-
-.marquee-text:before {
-left: 0;
-}
-
-.marquee-text:after {
-right: 0;
-}
-
-.marquee-text div {
-height: 30px;
-line-height: 30px;
-font-size: 16px;
-white-space: nowrap;
-color: #555;
-z-index: 1;
-animation: marquee 15s linear infinite;
-}
-
-.marquee-text:hover div {
-animation-play-state: paused
-}
-
-@keyframes marquee {
-0% { transform: translateX(100%); }
-100% { transform: translateX(-100%); }
-}
 /* baca juga by www.cahayaislami.my.id */
 .bacajuga {width:90%;border:1px solid #7f5cf7;margin:25px 0 10px;padding:5px 15px 0px;position:relative;border-radius:3px;}
 .bacajuga:before {display: block;content:"Baca Juga :";text-align:center;border-radius:3px;width:100px;background:#fff;position:absolute;border:1px solid #7f5cf7;left:15px;top:-15px;color: #7f5cf7;}
