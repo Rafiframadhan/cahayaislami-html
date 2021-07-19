@@ -1,28 +1,77 @@
 
 <meta content='width=device-width, initial-scale=1' name='viewport'>
-<style type="text/css">
-#toc{width:99%;margin:5px auto;border:1px solid #2D96DF;
--webkit-box-shadow:4px 4px 8px 2px rgba(0,0,0, 0.2);
--moz-box-shadow:4px 4px 8px 2px rgba(0,0,0, 0.2);
-box-shadow:4px 4px 8px 2px rgba(0,0,0, 0.2);}
-.labl{color:#FF5F00;font-weight:bold;margin:0 -5px;
-padding:1px 0 2px 11px;background: #3498DB;
-border:1px solid #2D96DF;
-border-radius:4px;-moz-border-radius:4px;
--webkit-border-radius:4px;box-shadow:3px 3px 1px #bbb;
--moz-box-shadow:3px 3px 1px #bbb;-webkit-box-shadow:3px 3px 1px #bbb;display:block;}
-.labl a{color:#fff;}
-.labl:first-letter{text-transform:uppercase;}
-.new{color:#FF5F00;font-weight:bold;font-style:italic;}
-.postname{font-weight:normal;background:#fff;margin-left: 35px;}
-.postname li{border-bottom: #ddd 1px dotted;margin-right:5px}
+<link href='https://fonts.googleapis.com/css?family=Roboto:300,300i,500,700,500i,900' rel='stylesheet' type='text/css'/>
+<style type='text/css'>
+body{font-family:'Open Sans',sans-serif;background: #fff;}
+*{-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
+#table-outer{padding:7px 10px;margin:0 auto}
+#table-outer table{width:auto;margin:0 auto}
+#table-outer form{font:inherit}
+#table-outer label{display:block;text-align:right;margin:0 10px 0 0;padding:4px 0 0}
+#table-outer select[disabled]{opacity:.4}
+#post-searcher{display:block;margin:0;padding:0}
+#table-outer input,#table-outer select{width:100%;border:1px solid #dedede;border-radius:5px;margin:0;padding:5px;font-family: Roboto,sans-serif!important;font-size:16px!important;font-weight:500!important;text-transform:capitalize!important;outline:0;color:#333!important;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+#table-outer select option{min-height:1.4em!important;}
+#table-outer input#feed-q{padding:5px 10px!important;}
+#feed-container{background:#fff;display:block;clear:both;margin:0;padding:0;list-style:none;height:400px;overflow-x:hidden;position:relative;border-top:none}
+#feed-container li{list-style:none;margin:0;padding:0;border-top:1px solid #eee;color:#555;width:auto;float:left;display:inline}
+#feed-container li .inner{margin:15px 0;height:auto;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis}
+#feed-container li a{text-decoration:none;color:#2C2C2C;font-weight:500}
+#feed-container li a:hover{text-decoration:none;color:#E94141}
+#feed-container li .news-text{margin-top:5px;line-height:1.3em!important}
+#feed-container li img{margin:0 15px 5px 0;padding:7px 7px 7px 0;float:left;display:block;}
+#result-desc{margin:0;padding:0;}
+#result-desc div,#result-desc span{display:block;margin:0;padding:5px 0 7px;color:#D64D52}
+#result-desc div{color:inherit}
+#feed-nav{margin:10px 0 30px;text-align:center;font-weight:500}
+#feed-nav a,#feed-nav span{border:1px solid #dedede;border-radius:5px;padding:0;color:#757575;text-decoration:none;display:block;height:30px;line-height:32px}
+#feed-nav a,#feed-nav span:hover{color:#1B1B1B}
+#feed-nav a:active,#feed-nav a:hover{color:#555}
+#feed-nav span{cursor:wait}
+@media (max-width:600px){#table-outer table{margin:0 auto;width:100%}
+#feed-container,#table-outer{margin:0 auto}
+#feed-container li .inner{margin:5px auto;height:auto}
+#feedContainer li{float:none;display:block;width:auto;height:auto}
+#feed-container li .news-text, #feedContainer:after,#feed-container li img{display:none!important}
+}
+@media screen and (max-width:414px){#table-outer table,#feed-container li{width:100%;}
+#table-outer table,#table-outer label{text-align:center}
+#table-outer table td{display:block;margin:0 auto 5px;clear:both;float:none}
+#table-outer label{margin:0;}
+#table-outer{padding:0;}
+}
 </style>
-<div id="toc">
+<div id="table-outer">
+<table><tbody>
+<tr><td><label for="feed-order">Urutkan artikel berdasarkan:</label></td> <td><select id="feed-order"> <option selected="" value="published">Artikel terbaru</option> <option value="updated">Artikel yang terakhir di update</option> </select></td></tr>
+<tr><td><label for="label-sorter">Filter artikel berdasarkan kategori:</label></td> <td><select disabled="" id="label-sorter"> <option selected="">Loading....</option> </select></td></tr>
+<tr>                 <td><label for="feed-q">Cari artikel dengan kata kunci:</label></td> <td><form id="post-searcher">
+<input id="feed-q" type="text" placeholder="Ketik dan tekan ENTER"/>
+</form>
+</td></tr>
+</tbody></table>
+</div>
+<header id="result-desc"></header>
+<ul id="feed-container"></ul>
+<div id="feed-nav">
+</div>
+<script>
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if(pair[0] == variable){return pair[1];}
+  }
+  return(false);
+}
+</script>
 <script type='text/javaScript'>
-/*!
- * thanks to mas Taufik Nurrohman
- * Insyaallah berkah.
- * URL: https://www.cahayaislami.my.id
- */
-!function(a,b){var c=(new Date).getTime(),d={blogUrl:"http://dte-feed.blogspot.com",containerId:"tabbed-toc",activeTab:1,showDates:!1,showSummaries:!1,numChars:200,showThumbnails:!1,thumbSize:40,noThumb:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAA3NCSVQICAjb4U/gAAAADElEQVQImWOor68HAAL+AX7vOF2TAAAAAElFTkSuQmCC",monthNames:["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],newTabLink:!0,maxResults:99999,preload:0,sortAlphabetically:!0,showNew:!1,newText:' &ndash; <em style="color:red;">Baru!</em>'};if("undefined"==typeof tabbedTOC)tabbedTOC=d;else for(var e in d)d[e]="undefined"!=typeof tabbedTOC[e]?tabbedTOC[e]:d[e];a["clickTabs_"+c]=function(a){for(var b=document.getElementById(d.containerId),c=b.getElementsByTagName("ol"),e=b.getElementsByTagName("ul")[0],f=e.getElementsByTagName("a"),g=0,h=c.length;h>g;++g)c[g].style.display="none",c[parseInt(a,10)].style.display="block";for(var i=0,j=f.length;j>i;++i)f[i].className="",f[parseInt(a,10)].className="active-tab"},a["showTabs_"+c]=function(e){for(var f=parseInt(e.feed.openSearch$totalResults.$t,10),g=d,h=e.feed.entry,i=e.feed.category,j="",l=0;l<(g.showNew===!0?5:g.showNew)&&l!==h.length;++l)h[l].title.$t=h[l].title.$t+(g.showNew!==!1?g.newText:"");h=g.sortAlphabetically?h.sort(function(a,b){return a.title.$t.localeCompare(b.title.$t)}):h,i=g.sortAlphabetically?i.sort(function(a,b){return a.term.localeCompare(b.term)}):i,j='<span class="toc-line"></span><ul class="toc-tabs">';for(var m=0,n=i.length;n>m;++m)j+='<li class="toc-tab-item-'+m+'"><a onclick="clickTabs_'+c+"("+m+');return false;" onmousedown="return false;" href="javascript:;">'+i[m].term+"</a></li>";j+="</ul>",j+='<div class="toc-content">';for(var o=0,n=i.length;n>o;++o){j+='<ol class="panel" data-category="'+i[o].term+'"',j+=o!=g.activeTab-1?' style="display:none;"':"",j+=">";for(var p=0;f>p&&p!==h.length;++p){for(var q,r=h[p],s=r.published.$t,t=g.monthNames,u=r.title.$t,v=("summary"in r&&g.showSummaries===!0?r.summary.$t.replace(/<br *\/?>/g," ").replace(/<.*?>/g,"").replace(/[<>]/g,"").substring(0,g.numChars)+"&hellip;":""),w=("media$thumbnail"in r&&g.showThumbnails===!0?'<img class="thumbnail" style="width:'+g.thumbSize+"px;height:"+g.thumbSize+'px;" alt="" src="'+r.media$thumbnail.url.replace(/\/s\d(\-c)?\//,"/s"+g.thumbSize+"-c/")+'"/>':'<img class="thumbnail" style="width:'+g.thumbSize+"px;height:"+g.thumbSize+'px;" alt="" src="'+g.noThumb.replace(/\/s\d(\-c)?\//,"/s"+g.thumbSize+"-c/")+'"/>'),x=r.category||[],y=g.showDates?'<time datetime="'+s+'" title="'+s+'">'+s.substring(8,10)+" "+t[parseInt(s.substring(5,7),10)-1]+" "+s.substring(0,4)+"</time>":"",z=0,A=r.link.length;A>z;++z)if("alternate"===r.link[z].rel){q=r.link[z].href;break}for(var B=0,C=x.length;C>B;++B){var D=g.newTabLink?' target="_blank"':"";x[B].term===i[o].term&&(j+='<li title="'+x[B].term+'"',j+=g.showSummaries?' class="bold"':"",j+='><a href="'+q+'"'+D+">"+u+y+"</a>",j+=g.showSummaries?'<span class="summary">'+w+v+'<span style="display:block;clear:both;"></span></span>':"",j+="</li>")}}j+="</ol>"}j+="</div>",j+='<div style="clear:both;"></div>',b.getElementById(g.containerId).innerHTML=j,a["clickTabs_"+c](g.activeTab-1)};var f=b.getElementsByTagName("head")[0],g=b.createElement("script");g.src=d.blogUrl.replace(/\/+$|[\?&#].*$/g,"")+"/feeds/posts/summary?alt=json-in-script&max-results="+d.maxResults+"&orderby=published&callback=showTabs_"+c,"onload"!==d.preload?a.setTimeout(function(){f.appendChild(g)},d.preload):a.onload=function(){f.appendChild(g)}}(window,document);
+document.write;var loadToc,loadCategories,_toc={init:function(){var cfg={homePage:getQueryVariable("url"),maxResults:10,numChars:270,thumbWidth:140,thumbHeight:95,navText:"Tampilkan artikel selanjutnya &#9660;",resetToc:"Kembali ke Awal",noImage:"//2.bp.blogspot.com/-ex3V86fj4dQ/UrCQQa4cLsI/AAAAAAAAFdA/j2FCTmGOrog/s1100/no-thumbnail.png",loading:"<span>Memuat...</span>",counting:"<div>Memuat artikel...</div>",searching:"<span>Mencari...</span>"},w=window,d=document,el=function(id){return d.getElementById(id);},o={a:el('feed-order'),b:el('label-sorter').parentNode,c:el('post-searcher'),d:el('feed-q'),e:el('result-desc'),f:el('feed-container'),g:el('feed-nav'),h:d.getElementsByTagName('head')[0],i:0,j:null,k:'published',l:0,m:""},fn={a:function(){old=el('temporer-script');old.parentNode.removeChild(old);},b:function(param){var script=d.createElement('script');script.type="text/javascript";script.id="temporer-script";script.src=param;if(el('temporer-script'))fn.a();o.h.appendChild(script);},c:function(mode,tag,order){o.i++;o.e.innerHTML=cfg.counting;o.g.innerHTML=cfg[mode==1?"searching":"loading"];if(mode===0){fn.b(tag!==null?cfg.homePage+'/feeds/posts/summary/-/'+ tag+'?alt=json-in-script&start-index='+((o.i*cfg.maxResults)+ 1)+'&max-results='+ cfg.maxResults+'&orderby='+ order+'&callback=loadToc':cfg.homePage+'/feeds/posts/summary?alt=json-in-script&start-index='+((o.i*cfg.maxResults)+ 1)+'&max-results='+ cfg.maxResults+'&orderby='+ order+'&callback=loadToc');}else if(mode==1){fn.b(cfg.homePage+'/feeds/posts/summary?alt=json-in-script&start-index='+((o.i*cfg.maxResults)+ 1)+'&max-results='+ cfg.maxResults+'&q='+ tag+'&orderby='+ order+'&callback=loadToc');}
+o.j=(tag!==null)?tag:null;o.l=mode;o.a.disabled=true;o.b.children[0].disabled=true;},d:function(json){var _h;o.g.innerHTML="";o.e.innerHTML=o.l==1?'<span>Hasil penelusuran untuk kata kunci <b>&#8220;'+ o.m+'&#8221;</b> ('+ json.feed.openSearch$totalResults.$t+' Hasil)</span>':'<div>Total: '+ json.feed.openSearch$totalResults.$t+' Artikel</div>';if("entry"in json.feed){var a=json.feed.entry,b,c,_d,e="0 Komentar",f="",g;for(var i=0;i<cfg.maxResults;i++){if(i==a.length)break;b=a[i].title.$t;_d=("summary"in a[i])?a[i].summary.$t.replace(/<br ?\/?>/ig," ").replace(/<(.*?)>/g,"").replace(/<iframe/ig,"").substring(0,cfg.numChars):"";g=("media$thumbnail"in a[i])?a[i].media$thumbnail.url.replace(/.*?:\/\//g , "//").replace(/\/s[0-9]+\-c/,"\/s"+ cfg.thumbWidth+""):cfg.noImage.replace(/\/s[0-9]+\-c/,"\/s"+ cfg.thumbWidth+"");for(var j=0,jen=a[i].link.length;j<jen;j++){c=(a[i].link[j].rel=="alternate")?a[i].link[j].href:"#";}
+for(var k=0,ken=a[i].link.length;k<ken;k++){if(a[i].link[k].rel=="replies"&&a[i].link[k].type=="text/html"){e=a[i].link[k].title;break;}}
+_h=d.createElement('li');_h.innerHTML='<div class="inner"><img style="width:'+ cfg.thumbWidth+'px;height:'+ cfg.thumbHeight+'px;" src="'+ g+'" alt="'+ b+'"><a class="toc-title" href="'+ c+'" target="_blank" title="'+ b+'">'+ b+'</a><div class="news-text">'+ _d+'&hellip;<br style="clear:both;"></div></div>';o.f.appendChild(_h);}
+_h=d.createElement('a');_h.href='#load-more';_h.innerHTML=cfg.navText;_h.onclick=function(){fn.c(o.l,o.j,o.k);return false;};}else{_h=d.createElement('a');_h.href='#reset-content';_h.innerHTML=cfg.resetToc;_h.onclick=function(){o.i=-1;o.e.innerHTML=cfg.counting;o.f.innerHTML="";fn.c(0,null,'published');o.a.innerHTML=o.a.innerHTML;o.b.children[0].innerHTML=o.b.children[0].innerHTML;return false;};}
+o.g.appendChild(_h);o.a.disabled=false;o.b.children[0].disabled=false;},e:function(json){var a=json.feed.category,b='<select id="label-sorter"><option value="" selected disabled>Pilih Kategori...</option>';for(var i=0,len=a.length;i<len;i++){b+='<option value="'+ encodeURIComponent(a[i].term).replace(/%20/g, " ")+'">'+ encodeURIComponent(a[i].term).replace(/%20/g, " ")+'</option>';}
+b+='</select>';o.b.innerHTML=b;o.b.children[0].onchange=function(){o.i=-1;o.f.innerHTML="";o.g.innerHTML=cfg.loading;fn.c(0,this.value,o.k);};}};loadToc=fn.d;loadCategories=fn.e;fn.b(cfg.homePage+'/feeds/posts/summary?alt=json-in-script&start-index='+(o.i+ 1)+'&max-results='+ cfg.maxResults+'&orderby=published&callback=loadToc');fn.b(cfg.homePage+'/feeds/posts/summary?alt=json-in-script&max-results=0&orderby=published&callback=loadCategories');o.a.onchange=function(){o.i=-1;o.f.innerHTML="";o.g.innerHTML=cfg.counting;o.b.children[0].innerHTML=o.b.children[0].innerHTML;fn.c(0,null,this.value);o.k=this.value;};o.c.onsubmit=function(){o.i=-1;o.f.innerHTML="";o.m=o.d.value;fn.c(1,o.d.value,o.k);return false;};}};_toc.init();
 </script>
